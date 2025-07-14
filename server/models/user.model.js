@@ -1,4 +1,7 @@
-const {schema, model, Schema} = require('mongoose');
+const {model, Schema} = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+
 
 const userSchema = new Schema({
     fullName: {
@@ -44,6 +47,38 @@ const userSchema = new Schema({
 });
 
 // now we create our model and we are going to use this model in our controller
+
+userSchema.pre('save', async function (next) {
+    // If password is not modified, move to the next middleware
+    if (!this.isModified('password')) {
+        return next();
+    }
+
+    // If password is new or modified, hash it using bcrypt
+    this.password = await bcrypt.hash(this.password, 10);
+
+    // Move to the next middleware after hashing
+    next();
+});
+
+userSchema.methods = {
+    comparePassword: async function (plainTextPassword) {
+        return await bcrypt.compare(plainTextPassword, this.password);
+    },
+    generateJWTToken: function(){
+        return jwt.sign(
+            {   id: this._id, 
+                role: this.role, 
+                email: this.email, 
+                subscription: this.subscription},
+                process.env.JWT_SECRET,
+                {
+                    expiresIn: process.env.JWT_EXPIRY
+                }
+        )
+    }
+}
+
 
 const User = model('User', userSchema);
 // 'User' is the collection name that we want to use in our database and second tell me the schema

@@ -1,5 +1,5 @@
-const User = require("../models/user.model");
-const { default: AppError } = require("../utils/appError").default;
+import User from '../models/user.model.js';
+import AppError from '../utils/appError.js';
 
 // User → This is a Mongoose model representing your MongoDB collection (probably users collection in your database).
 
@@ -9,7 +9,7 @@ const cookieOptions = {
     httpOnly: true
 }
 
-const register = async (req,res) => {
+const register = async (req,res,next) => {
     const {fullName, email, password} = req.body;
 
     if (!fullName || !email || !password){
@@ -39,7 +39,7 @@ const register = async (req,res) => {
         return next(new AppError('User registeration failed, please try again', 400 ));
     }
 
-    await user.save();
+    await user.save();  //save it in the database
 
     user.password = undefined;
 
@@ -50,7 +50,7 @@ const register = async (req,res) => {
     })
 }
 
-const login = async (req,res) => {
+const login = async (req,res, next) => {
     const { email, password} =req.body;
 
       if (!email || !password){
@@ -87,7 +87,7 @@ const logout = (req,res) => {
     res.status(200).json({
         success: true,
         message: 'User logged out successfully'
-    })
+    });
 }
 
 const getProfile = (req,res) => {
@@ -97,12 +97,7 @@ const getProfile = (req,res) => {
         success: true,
         message: 'user details',
         user
-    })
+    });
 }
 
-module.exports = {
-    register,
-    login,
-    logout,
-    getProfile
-}
+export { register, login, logout, getProfile };

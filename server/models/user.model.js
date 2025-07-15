@@ -1,86 +1,79 @@
-const {model, Schema} = require('mongoose');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
+const { Schema, model } = mongoose;
 
 const userSchema = new Schema({
-    fullName: {
-        type: String,
-        required: [true, "Name is required"],
-        minLength: [1, 'Name must be at-least 5 character'],
-        maxLength: [50, 'Name must should be less than 50 character'],
-        lowerCase: true,
-        trim: true
-    },
-    emails: {
-        type: String,
-        required: [true, "Name is required"],
-        unique: true,
-        lowerCase: true,
-        trim: true
-    },
-    password: {
-        type: String,
-        required: [true, "Password is required"],
-        minLength: [8, 'Password must be at-least 8 character'],
-        maxLength: [50, 'Password must should be less than 50 character'],
-        select: false
-    },
-    role: {
-        type: String,
-        enum: ['USER', 'ADMIN'],
-        default: 'USER'
-    },
-    avatar: {
-        public_id: {
-            type: String
-        },
-        secure_url:{
-            type: String
-        }
-    },
-    forgotPasswordTokens: String,
-    forgotPasswordExpiry: Date
+  fullName: {
+    type: String,
+    required: [true, 'Name is required'],
+    minLength: [1, 'Name must be at least 1 character'],
+    maxLength: [50, 'Name should be less than 50 characters'],
+    lowercase: true,
+    trim: true
+  },
+  email: {
+    type: String,
+    required: [true, 'Email is required'],
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minLength: [5, 'Password must be at least 5 characters'],
+    // maxLength: [50, 'Password should be less than 50 characters'],
+    select: false
+  },
+  role: {
+    type: String,
+    enum: ['USER', 'ADMIN'],
+    default: 'USER'
+  },
+  avatar: {
+    public_id: { type: String },
+    secure_url: { type: String }
+  },
+  forgotPasswordTokens: String,
+  forgotPasswordExpiry: Date
 
 }, {
-    timestamps: true
+  timestamps: true
 });
 
-// now we create our model and we are going to use this model in our controller
-
+// Hash password before saving
 userSchema.pre('save', async function (next) {
-    // If password is not modified, move to the next middleware
-    if (!this.isModified('password')) {
-        return next();
-    }
+  if (!this.isModified('password')) {
+    return next();
+  }
 
-    // If password is new or modified, hash it using bcrypt
-    this.password = await bcrypt.hash(this.password, 10);
-
-    // Move to the next middleware after hashing
-    next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
+// Instance methods
 userSchema.methods = {
-    comparePassword: async function (plainTextPassword) {
-        return await bcrypt.compare(plainTextPassword, this.password);
-    },
-    generateJWTToken: function(){
-        return jwt.sign(
-            {   id: this._id, 
-                role: this.role, 
-                email: this.email, 
-                subscription: this.subscription},
-                process.env.JWT_SECRET,
-                {
-                    expiresIn: process.env.JWT_EXPIRY
-                }
-        )
-    }
-}
+  comparePassword: async function (plainTextPassword) {
+    return await bcrypt.compare(plainTextPassword, this.password);
+  },
 
+  generateJWTToken: function () {
+    return jwt.sign(
+      {
+        id: this._id,
+        role: this.role,
+        email: this.email
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRY
+      }
+    );
+  }
+};
 
 const User = model('User', userSchema);
-// 'User' is the collection name that we want to use in our database and second tell me the schema
 
-module.exports = User;
+export default User;

@@ -1,5 +1,5 @@
 here we require two things models and schema
- you can define a schema to enforce a structure on the documents within a collection.
+you can define a schema to enforce a structure on the documents within a collection.
 
 📖 In Simple Terms:
 A schema is a blueprint or structure that defines:
@@ -12,7 +12,7 @@ Which fields are required, have default values, or are unique.
 
 we can also have to perform the validation like zod validation means name have 6 char password more than 8 char etc
 
--------------------------------------------
+---
 
 // सबसे पहले bcrypt लाइब्रेरी को import कर लेते हैं — जो password को encrypt करने के लिए काम आती है
 const bcrypt = require('bcrypt');
@@ -20,10 +20,10 @@ const bcrypt = require('bcrypt');
 // userSchema में pre-save middleware लगाते हैं
 // मतलब जब भी कोई document (user) डेटाबेस में save होने वाला होगा, उससे पहले ये middleware चलेगा
 userSchema.pre('save', async function (next) {
-    
+
     // 'this' का मतलब है — अभी जो document save होने वाला है वही
     // Example: कोई नया user बन रहा है या existing user का data update हो रहा है
-    
+
     // अब सबसे पहले चेक करते हैं कि password field में कोई बदलाव हुआ है या नहीं
     // अगर password बदला नहीं है, तो hashing की ज़रूरत नहीं — सीधा अगले काम पर बढ़ जाओ
     if (!this.isModified('password')) {
@@ -46,9 +46,10 @@ userSchema.pre('save', async function (next) {
 
     // hashing complete होने के बाद, अगले काम पर बढ़ जाओ
     next();
+
 });
 
----------------------------------------------------
+---
 
 // अब User नाम का model बना लेते हैं — जिससे हम database में 'users' collection पर काम कर सकें
 const User = model('User', userSchema);
@@ -69,8 +70,7 @@ userSchema.methods = {
         // अगर दोनों match करते हैं तो true return करेगा, वरना false
         return await bcrypt.compare(plainTextPassword, this.password);
     }
+
 }
 
-
-------------------------------------------------------
-
+---

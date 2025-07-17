@@ -18,4 +18,3 @@ It ensures our backend is always ready to handle requests from the frontend or a
 
 👉 In short:
 server.js boots up our Express application, connects everything, and keeps the backend server running.
-

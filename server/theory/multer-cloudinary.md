@@ -39,7 +39,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 app.post('/upload', upload.single('file'), (req, res) => {
-  console.log(req.file);
+console.log(req.file);
 });
 📦 Cloudinary क्या है?
 Cloudinary एक cloud-based image और video management service है।
@@ -62,7 +62,7 @@ Edit
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.uploader.upload('path/to/image', (error, result) => {
-  console.log(result.url);
+console.log(result.url);
 });
 📌 सरल भाषा में:
 Multer server पर file upload करने की जिम्मेदारी लेता है।

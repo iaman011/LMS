@@ -24,8 +24,8 @@ const app = express();
 app.use(cookieParser());
 
 app.get('/profile', (req, res) => {
-  console.log(req.cookies); // yahan cookies mil jayengi
-  res.send('Profile page');
+console.log(req.cookies); // yahan cookies mil jayengi
+res.send('Profile page');
 });
 Jab bhi koi /profile route pe request karega, uske saath jo bhi cookies aayi hongi, wo req.cookies mein aa jayengi.
 

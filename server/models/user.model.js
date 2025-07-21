@@ -41,7 +41,7 @@ const userSchema = new Schema({
     public_id: { type: String },
     secure_url: { type: String }
   },
-  forgotPasswordTokens: String,
+  forgotPasswordToken: String,
   forgotPasswordExpiry: Date
 
 }, {

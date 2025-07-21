@@ -1,13 +1,10 @@
-// import crypto from 'crypto';
-// import fs from 'fs/promises';
-
+import crypto from 'crypto';
+import fs from 'fs/promises';
 import cloudinary from 'cloudinary';
-
-// import asyncHandler from '../middlewares/asyncHandler.middleware.js';
 import User from '../models/user.model.js';
 import sendEmail from '../utils/sendEmail.js';
-
 import AppError from '../utils/appError.js';
+
 
 // User → This is a Mongoose model representing your MongoDB collection (probably users collection in your database).
 
@@ -156,6 +153,7 @@ const forgotPassword = async (req, res, next) => {
   await user.save();
 
   const resetPasswordUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+  console.log(" Reset Password URL:", resetPasswordUrl);
   const subject = 'Reset Password';
   const message = `
     You can reset your password by clicking <a href="${resetPasswordUrl}" target="_blank">Reset your password</a>.<br/>
@@ -181,8 +179,125 @@ const forgotPassword = async (req, res, next) => {
 };
 
 const resetPassword = async (req,res,next) => {
+    const {resetToken} = req.params;
+    const{password} = req.body;
+
+    // our data is encrypted in tha database as we use crypto for it so using the same for disable the encrytion
+    const forgotPasswordToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
+
+    const user = await User.findOne({
+        forgotPasswordToken,
+        forgotPasswordExpiry: {$gt: Date.now()}
+
+    });
+
+    if (!user){
+         return next(new AppError('Token is invalid or expired, Please try again', 400)); 
+    }
+// if user/token is valid
+    user.password = password; //storing the new changed password in user password
+    user.forgotPasswordExpiry = undefined;
+    user.forgotPasswordToken = undefined;
+
+    await user.save(); //saving the new changed password in the database as it is automatically encrypted before saving in the database as we using pre hook in crypto
+
+    res.status(200).json({
+        success: true,
+        message: 'Password changed successfully'
+    })
 
 }
 
+const changePassword = async function(req, res, next) {
+  const { oldPassword, newPassword } = req.body;
+  const { id } = req.user;
 
-export { register, login, logout, getProfile, forgotPassword, resetPassword };
+  if (!oldPassword || !newPassword) {
+    return next(new AppError('All fields are mandatory', 400)); 
+  }
+
+  // Find the user by their ID from the database, and also fetch the password field, even though it is hidden by default.
+  const user = await User.findById(id).select('+password');
+
+  if (!user) {
+    return next(new AppError('User does not exist', 400)); 
+  }
+
+  const isPasswordValid = await user.comparePassword(oldPassword);
+
+  if (!isPasswordValid) {
+    return next(new AppError('Invalid old password', 400)); 
+  }
+
+  user.password = newPassword;
+
+  await user.save();
+
+  user.password = undefined;
+
+  res.status(200).json({
+    success: true,
+    message: "Password changed successfully!"
+  });
+};
+
+const updateUser = async function (req,res,next) {
+    const {fullName} = req.body;
+    const {id} = req.user;
+
+    // checking user is exist or not
+    const user = await User.findById(id);
+    
+    if(!user){
+      return next(new AppError('User does not exist', 400));
+    }
+
+if (fullName) {
+    user.fullName = fullName;
+  }
+
+  // Run only if user sends a file
+  if (req.file) {
+    // Deletes the old image uploaded by the user
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+
+    try {
+      const result = await cloudinary.v2.uploader.upload(req.file.path, {
+        folder: 'lms', // Save files in a folder named lms
+        width: 250,
+        height: 250,
+        gravity: 'faces', // This option tells cloudinary to center the image around detected faces (if any) after cropping or resizing the original image
+        crop: 'fill',
+      });
+
+      // If success
+      if (result) {
+        // Set the public_id and secure_url in DB
+        user.avatar.public_id = result.public_id;
+        user.avatar.secure_url = result.secure_url;
+
+        // After successful upload remove the file from local storage
+        fs.rm(`uploads/${req.file.filename}`);
+      }
+    } catch (error) {
+      return next(
+        new AppError(error || 'File not uploaded, please try again', 400)
+      );
+    }
+  }
+
+  // Save the user object
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'User details updated successfully',
+  });
+};
+
+
+
+export { register, login, logout, getProfile, forgotPassword, resetPassword, changePassword, updateUser };

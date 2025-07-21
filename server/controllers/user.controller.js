@@ -5,7 +5,7 @@ import cloudinary from 'cloudinary';
 
 // import asyncHandler from '../middlewares/asyncHandler.middleware.js';
 import User from '../models/user.model.js';
-// import sendEmail from '../utils/sendEmail.js';
+import sendEmail from '../utils/sendEmail.js';
 
 import AppError from '../utils/appError.js';
 
@@ -138,46 +138,47 @@ const getProfile = (req,res) => {
     });
 }
 
-const forgotPassword = async (req,res,next) => {
-    const { email } = req.body;
+const forgotPassword = async (req, res, next) => {
+  const { email } = req.body;
 
-    if (!email) {
-        return next(new AppError('Email is required', 400));
-            
-    }
+  if (!email) {
+    return next(new AppError('Email is required', 400));
+  }
 
-    const user= await User.findOne({email});
+  const user = await User.findOne({ email });
 
-    if (!User) {
-        return next(new AppError('Email is not registered', 400));
-           
-    }
+  if (!user) {
+    return next(new AppError('Email is not registered', 400));
+  }
 
-    // consider your email was there  and email exist in the database these are two condition which are valid and true
-    // simply we have to reset our token and generate new token
+  // Generate reset token and save user
+  const resetToken = await user.generatePasswordResetToken();
+  await user.save();
 
-    const resetToken = await user.generatePasswordResetToken();
+  const resetPasswordUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+  const subject = 'Reset Password';
+  const message = `
+    You can reset your password by clicking <a href="${resetPasswordUrl}" target="_blank">Reset your password</a>.<br/>
+    If the above link doesn't work, copy and paste this link into a new tab:<br/>
+    ${resetPasswordUrl}<br/><br/>
+    If you did not request a password reset, please ignore this email.
+  `;
 
+  try {
+    await sendEmail(email, subject, message);
+    res.status(200).json({
+      success: true,
+      message: `Reset password token has been sent to ${email} successfully!`,
+    });
+  } catch (error) {
+    // Clear reset token and expiry if sending fails
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
     await user.save();
 
-    const resetPasswordUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-    const subject = 'Reset Password';
-    const message = `You can reset your password by clicking <a href=${resetPasswordUrl} target="_blank">Reset your password</a>\nIf the above link does not work for some reason then copy paste this link in new tab ${resetPasswordUrl}.\n If you have not requested this, kindly ignore.`; 
-
-    try{
-        await sendEmail(email,subject,message);
-        res.status(200).json({
-            success: true,
-            message: `Reset Password token has been sent to ${email} successfully!`
-        });
-    } catch (e){
-        user.forgotPasswordExpiry = undefined;
-        user.forgotPasswordTokens = undefined;
-        await user.save();
-        return next(new AppError(e.message, 500));
-    }
-
-}
+    return next(new AppError(error.message, 500));
+  }
+};
 
 const resetPassword = async (req,res,next) => {
 

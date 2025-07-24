@@ -1,3 +1,15 @@
+ye ek dynamic value hoti hai jo autmatically generate hoti in to access this use req.params and provide path /:id used when we want details of specific things like any lectures etc
+
+router
+    .route('/:courseId')
+    .get(getLecturesByCourseId); 
+    
+export const getLecturesByCourseId = async(req,res,next) => {
+    try {
+        const {courseId} = req.params;
+    }}
+
+
 🔷 params क्या होता है?
 जब आप किसी API या route को access करते हैं जैसे:
 

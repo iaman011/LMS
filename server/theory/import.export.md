@@ -7,6 +7,23 @@ for arrow function must use this in controller
 must ensure while importing you must put the file extension
 otherwise it throws error 'ERR_MODULE_NOT_FOUND'
 
+---
+// auth.middleware.js
+export const isLoggedIn = (req, res, next) => { ... };
+
+// course.route.js
+import { isLoggedIn } from "../middlewares/auth.middleware.js";
+
+---
+// auth.middleware.js
+const isLoggedIn = (req, res, next) => { ... };
+export default isLoggedIn;
+
+// course.route.js
+import isLoggedIn from "../middlewares/auth.middleware.js";
+
+---
+
 📦 सबसे पहले समझो — दो तरह के export होते हैं:
 ✅ 1️⃣ CommonJS (पुराना Node.js का system)
 👉 इसमें हम करते हैं:

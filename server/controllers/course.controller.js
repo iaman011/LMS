@@ -73,7 +73,8 @@ export const createCourse = async (req,res,next) => {
 
         res.status(201).json({
         success: true,
-        message: 'Course created successfully'
+        message: 'Course created successfully',
+        course
     });
 
 
@@ -84,6 +85,30 @@ export const createCourse = async (req,res,next) => {
 
 export const updateCourse = async (req,res,next) => {
       try{
+        const {courseId} = req.params;
+console.log("courseId:", courseId);
+
+        const course = await Course.findByIdAndUpdate(
+           courseId,
+           {
+            $set: req.body // means only provide the fields you want to update
+
+           },
+           {
+            runValidators: true,
+            new: true, // return the updated document
+           } 
+        )
+
+        if (!course) {
+             return next(new AppError ('Course not found', 400))
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Course updated successfully!',
+            course
+        })
 
     } catch(e){
          return next(new AppError (e.message, 500))

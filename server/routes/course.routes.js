@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { createCourse, deleteCourse, getAllCourses, getLecturesByCourseId, updateCourse } from "../controllers/course.controller.js";
-import isLoggedIn from "../middlewares/auth.middleware.js"
+import { addLectureToCourseById, createCourse, deleteCourse, getAllCourses, getLecturesByCourseId, updateCourse } from "../controllers/course.controller.js";
+import isLoggedIn, { authorizedRoles } from "../middlewares/auth.middleware.js"
 import upload from "../middlewares/multer.middleware.js"
 
 const router = Router();
@@ -9,10 +9,9 @@ router
     .route('/')
     .get(getAllCourses)
     .post(
-    upload.single('thumbnail'),  
-    // Middleware to handle single file upload (field name: 'thumbnail') using Multer
-    // The file will be available in req.file.
-
+        isLoggedIn,
+        authorizedRoles('ADMIN'),
+        upload.single('thumbnail'),  // Middleware to handle single file upload (field name: 'thumbnail') using Multer. The file will be available in req.file.
         createCourse
     );
 
@@ -22,7 +21,8 @@ router
     .route('/:courseId')
     .get(isLoggedIn,getLecturesByCourseId)  //to fetch lecture details
     // check this from lec 3 later after upload courses on postman
-    .put(updateCourse)
-    .delete(deleteCourse);
+    .put(isLoggedIn,authorizedRoles('ADMIN'),updateCourse)
+    .delete(isLoggedIn,authorizedRoles('ADMIN'),deleteCourse)
+    .post(isLoggedIn,authorizedRoles('ADMIN'),upload.single('thumbnail'),addLectureToCourseById);
 
 export default router;

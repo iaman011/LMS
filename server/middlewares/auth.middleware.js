@@ -17,4 +17,12 @@ const isLoggedIn = function (req, res, next) {
   }
 };
 
-export default isLoggedIn;
+export const authorizedRoles = (...roles) => (req,res,next) => {
+  const currentRole = req.user.role;
+  if(!roles.includes(currentRole)){
+     return next(new AppError('You do not have permission to access this route', 403));
+  }
+  next();
+}
+
+export default isLoggedIn ;

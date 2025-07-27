@@ -137,3 +137,57 @@ export const deleteCourse = async (req, res, next) => {
     return next(new AppError(e.message, 500));
   }
 };
+
+export const addLectureToCourseById = async (req, res, next) => {
+  try {
+    // required Inputs
+    const { title, description } = req.body;
+    const { courseId } = req.params;
+
+    // Input validation
+    if (!title || !description) {
+      return next(new AppError('Title and description are required', 400));
+    }
+
+    // Find the course
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return next(new AppError('Course not found with given ID', 400));
+
+    }
+
+    const lectureData = {
+        title,
+        description,
+        lecture: {} 
+    }
+
+    if (req.file){ //file upload for thumbnail
+        const result = await cloudinary.v2.uploader.upload(req.file.path, {
+            folder: 'LMS',
+        });
+
+        if (result) {
+            lectureData.lecture.public_id = result.public_id;
+            lectureData.lecture.secure_url = result.secure_url;
+        }
+
+        fs.rm(`uploads/${req.file.filename}`);
+    }
+
+    course.lectures.push(lectureData);
+    course.numberOfLectures = course.lectures.length;
+
+    // Save changes
+    await course.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Lecture added successfully',
+      course
+    });
+
+  } catch (e) {
+    return next(new AppError(e.message, 500));
+  }
+};

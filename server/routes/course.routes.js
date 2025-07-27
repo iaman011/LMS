@@ -23,6 +23,6 @@ router
     // check this from lec 3 later after upload courses on postman
     .put(isLoggedIn,authorizedRoles('ADMIN'),updateCourse)
     .delete(isLoggedIn,authorizedRoles('ADMIN'),deleteCourse)
-    .post(isLoggedIn,authorizedRoles('ADMIN'),upload.single('thumbnail'),addLectureToCourseById);
+    .post(isLoggedIn,authorizedRoles('ADMIN'),upload.single('lecture'),addLectureToCourseById);
 
 export default router;

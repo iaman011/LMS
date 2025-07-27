@@ -52,4 +52,12 @@ Purpose	Update/replace a known resource	Create a new resource
 Idempotent	✅ Yes	❌ No
 URI control	Client specifies URI	Server usually assigns URI
 
+---
+
+  res.status(200).json({
+      success: true,
+      message: 'Course deleted successfully',
+      course  // yaha par variable ke name de jisme fn apply kiya hai uss se post man par check krne mein puri details show hogi
+    });
+
 

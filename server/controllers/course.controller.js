@@ -115,10 +115,25 @@ console.log("courseId:", courseId);
     }
 };
 
-export const deleteCourse = async (req,res,next) => {
-      try{
+export const deleteCourse = async (req, res, next) => {
+  try {
+    const { courseId } = req.params;
 
-    } catch(e){
-         return next(new AppError (e.message, 500))
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return next(new AppError('Course does not exist on given Id!', 500));
     }
+
+    // If course exists, delete it
+    await course.deleteOne();
+
+    res.status(200).json({
+      success: true,
+      message: 'Course deleted successfully',
+      course
+    });
+
+  } catch (e) {
+    return next(new AppError(e.message, 500));
+  }
 };

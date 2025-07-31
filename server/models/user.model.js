@@ -42,7 +42,11 @@ const userSchema = new Schema({
     secure_url: { type: String }
   },
   forgotPasswordToken: String,
-  forgotPasswordExpiry: Date
+  forgotPasswordExpiry: Date,
+  subscription:{
+    id: String,
+    status: String
+  }
 
 }, {
   timestamps: true
@@ -73,7 +77,8 @@ userSchema.methods = {
       {
         id: this._id,
         role: this.role,
-        email: this.email
+        email: this.email,
+        subscription: this.subscription
       },
       process.env.JWT_SECRET,
       {

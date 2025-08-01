@@ -1,13 +1,15 @@
 import { Router } from "express";
 import { addLectureToCourseById, createCourse, deleteCourse, getAllCourses, getLecturesByCourseId, updateCourse } from "../controllers/course.controller.js";
-import isLoggedIn, { authorizedRoles } from "../middlewares/auth.middleware.js"
+import isLoggedIn, { authorizedRoles, authorizedSubscriber } from '../middlewares/auth.middleware.js';
 import upload from "../middlewares/multer.middleware.js"
 
 const router = Router();
 
 router
     .route('/')
-    .get(getAllCourses)
+    .get(
+        getAllCourses
+    )
     .post(
         isLoggedIn,
         authorizedRoles('ADMIN'),
@@ -19,10 +21,27 @@ router
 
 router
     .route('/:courseId')
-    .get(isLoggedIn,getLecturesByCourseId)  //to fetch lecture details
+    .get(
+        isLoggedIn,
+        authorizedSubscriber,
+        getLecturesByCourseId
+    )  //to fetch lecture details
     // check this from lec 3 later after upload courses on postman
-    .put(isLoggedIn,authorizedRoles('ADMIN'),updateCourse)
-    .delete(isLoggedIn,authorizedRoles('ADMIN'),deleteCourse)
-    .post(isLoggedIn,authorizedRoles('ADMIN'),upload.single('lecture'),addLectureToCourseById);
+    .put(
+        isLoggedIn,
+        authorizedRoles('ADMIN'),
+        updateCourse
+    )
+    .delete(
+        isLoggedIn,
+        authorizedRoles('ADMIN'),
+        deleteCourse
+    )
+    .post(
+        isLoggedIn,
+        authorizedRoles('ADMIN'),
+        upload.single('lecture'),
+        addLectureToCourseById
+    );
 
 export default router;

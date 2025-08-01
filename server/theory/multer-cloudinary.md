@@ -1,3 +1,10 @@
+<!-- multer -->
+using multer to upload images
+<!-- cloudinary -->
+using cloudinary to upload and save it to cdn kind of things
+
+
+
 while uploading the image at the time of registeration
 📖 इस Diagram की Story:
 यह एक image upload का backend flow दिखा रहा है।

@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { buySubscription, cancelSubscription, getAllPayment, getRazorpayApiKey, verifySubscription } from '../controllers/payment.controller.js';
+import { allPayments, buySubscription, cancelSubscription, getRazorpayApiKey, verifySubscription } from '../controllers/payment.controller.js';
 import isLoggedIn, { authorizedRoles } from '../middlewares/auth.middleware.js';
 
 const router = Router();
@@ -37,7 +37,7 @@ router
     .post(
         isLoggedIn,
         authorizedRoles('ADMIN'),
-        getAllPayment
+        allPayments
     );
 
 export default router;

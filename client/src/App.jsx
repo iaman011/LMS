@@ -1,14 +1,19 @@
 // import { useState } from 'react'
+import Footer from '../components/footer'
 import './App.css'
 
 function App() {
   // const [count, setCount] = useState(0)
 
-    return(
+  return (
+    <>
       <div className='text-2xl text-amber-200'>
-        heelo
+        hello
       </div>
-    )
- }
+
+      <Footer />
+    </>
+  )
+}
 
 export default App

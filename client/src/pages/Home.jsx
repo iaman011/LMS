@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between min-h-[90vh] px-6 sm:px-16 gap-10">
+    <div className="flex flex-col md:flex-row items-center justify-between min-h-[100vh] px-6 sm:px-16 gap-10">
       {/* Left Section: Text Content */}
-      <div className="w-full md:w-1/2 text-center md:text-left space-y-6">
-        <h1 className="text-6xl sm:text-7xl font-extrabold text-indigo-600 drop-shadow-md">
-          codeXdev 🚀
+      <div className="w-full md:w-1/2 text-center md:text-left space-y-6 mt-10 mb-5">
+        <h1 className="text-6xl sm:text-7xl font-extrabold text-indigo-600 drop-shadow-md mb-10">
+          codeXdev
         </h1>
 
       <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
@@ -40,9 +40,9 @@ const Home = () => {
       {/* Right Section: Image */}
       <div className="w-full md:w-1/2 flex justify-center">
         <img
-          src="/lers.png"
+          src="../../public/indomay32.jpg"
           alt="home page image"
-          className="w-3/4 md:w-full max-w-md"
+          className="w-3/4 md:w-full max-w-md rounded-xl shadow-2xl"
         />
       </div>
     </div>

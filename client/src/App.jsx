@@ -1,13 +1,13 @@
-import Home from './pages/Home';
-import './App.css';
-import { Route, Routes } from 'react-router-dom';
-import HomeLayout from './layouts/HomeLayout'; 
+import Home from "./pages/Home";
+import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import HomeLayout from "./layouts/HomeLayout";
+import Aboutus from "./pages/Aboutus";
 
 function App() {
   return (
-    <>
-     <div className='bg-indigo-200'>
-       <Routes>
+    <div className="bg-indigo-200">
+      <Routes>
         <Route
           path="/"
           element={
@@ -16,9 +16,10 @@ function App() {
             </HomeLayout>
           }
         />
+
+        <Route path="/about" element={<Aboutus />} />
       </Routes>
-     </div>
-    </>
+    </div>
   );
 }
 

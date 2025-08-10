@@ -2,22 +2,22 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between min-h-[100vh] px-6 sm:px-16 gap-10">
+    <div className="flex flex-col md:flex-row items-center justify-between min-h-[100vh] px-6 sm:px-16 gap-10 bg-neutral-50">
       {/* Left Section: Text Content */}
       <div className="w-full md:w-1/2 text-center md:text-left space-y-6 mt-10 mb-5">
-        <h1 className="text-6xl sm:text-7xl font-extrabold text-indigo-600 drop-shadow-md mb-10">
+        <h1 className="text-6xl sm:text-7xl font-extrabold text-neutral-700 drop-shadow-md mb-10">
           codeXdev
         </h1>
 
       <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
-  Welcome to <span className="font-bold text-indigo-600">codeXdev</span> — your ultimate gateway to a world of knowledge! 🚀<br />
+  Welcome to <span className="font-bold text-indigo-600">codeXdev</span> — your ultimate gateway to a world of knowledge!<br />
   Explore our extensive library of expertly curated courses, taught by seasoned professionals and industry leaders — all at incredibly affordable prices.<br />
-  <span className="font-semibold text-indigo-500">Start your learning journey with us today and unlock your true potential! 🎓✨</span>
+  <span className="font-semibold text-orange-200">Start your learning journey with us today and unlock your true potential!</span>
 </p>
 
 
         <h2 className="text-3xl sm:text-4xl font-semibold text-gray-800">
-          🎯 Discover top-notch{" "}
+          Discover top-notch{" "}
           <span className="text-yellow-500 font-bold">Online Courses</span>{" "}
           tailored just for you!
         </h2>
@@ -40,9 +40,9 @@ const Home = () => {
       {/* Right Section: Image */}
       <div className="w-full md:w-1/2 flex justify-center">
         <img
-          src="../../public/indomay32.jpg"
+          src="../../public/homePageMainImage.png"
           alt="home page image"
-          className="w-3/4 md:w-full max-w-md rounded-xl shadow-2xl"
+          className="w-3/4 md:w-full max-w-md"
         />
       </div>
     </div>

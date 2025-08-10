@@ -12,7 +12,7 @@ const Aboutus = () => {
                 Affordable and Quality Education
               </h1>
               <p className="text-lg md:text-xl text-gray-200">
-                At <strong>codeXdev</strong>, we empower learners and educators
+                At <strong>codeXdev</strong>,<br /> we empower learners and educators
                 to thrive in the digital era through innovative, inclusive, and
                 accessible education. Our mission goes beyond teaching—we foster
                 collaboration, ignite creativity, and cultivate future-ready
@@ -52,7 +52,7 @@ const Aboutus = () => {
                 alt="mern"
               />
             
-              <p className="text-xl text-gray-200">
+              <p className="text-xl text-gray-200 italic">
                "Crafting scalable solutions with Mongo, Express, React & Node — from concept to cloud."
               </p>
              
@@ -70,17 +70,17 @@ const Aboutus = () => {
 
           <div id="slide2" className="carousel-item relative w-full">
             <div className="flex flex-col items-center justify-center gap-4 px-[15%]">
-              {/* for personality image */}
+            
               <img
                className="w-70 rounded-full shadow-2xl"
                 src="../../public/devops.png"
                 alt="DevOps"
               />
-              {/* for writting the quotes */}
-              <p className="text-xl text-gray-200">
+              
+              <p className="text-xl text-gray-200 italic">
                 "DevOps is the art of delivering innovation at speed — where code, culture, and automation flow as one."
               </p>
-              {/* for personality name */}
+             
               <h3 className="text-2xl font-semibold">DevOps</h3>
             </div>
             <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
@@ -95,17 +95,17 @@ const Aboutus = () => {
 
           <div id="slide3" className="carousel-item relative w-full">
             <div className="flex flex-col items-center justify-center gap-4 px-[15%]">
-              {/* for personality image */}
+            
               <img
                 className="w-70 rounded-full shadow-2xl"
                 src="../../public/C++_Logo.svg"
                 alt="einstein"
               />
-              {/* for writting the quotes */}
-              <p className="text-xl text-gray-200">
+            
+              <p className="text-xl text-gray-200 italic">
                 "Mastering logic through DSA, sculpting efficiency with every line of C++."
               </p>
-              {/* for personality name */}
+              
               <h3 className="text-2xl font-semibold">DSA using C++</h3>
             </div>
             <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
@@ -120,17 +120,17 @@ const Aboutus = () => {
 
           <div id="slide4" className="carousel-item relative w-full">
             <div className="flex flex-col items-center justify-center gap-4 px-[15%]">
-              {/* for personality image */}
+          
               <img
                className="w-70 rounded-full shadow-2xl"
                 src="../../public/datascience.jpg"
                 alt="Steve Jobs"
               />
-              {/* for writting the quotes */}
-              <p className="text-xl text-gray-200">
+             
+              <p className="text-xl text-gray-200 italic">
                 Learn the Language of Data — Speak with Insights.
               </p>
-              {/* for personality name */}
+             
               <h3 className="text-2xl font-semibold">Data Science</h3>
             </div>
             <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
@@ -145,17 +145,17 @@ const Aboutus = () => {
 
           <div id="slide5" className="carousel-item relative w-full">
             <div className="flex flex-col items-center justify-center gap-4 px-[15%]">
-              {/* for personality image */}
+             
               <img
                 className="w-70 rounded-full shadow-2xl"
                 src="../../public/aiml.png"
                 alt="Bill Gates"
               />
-              {/* for writting the quotes */}
-              <p className="text-xl text-gray-200">
+           
+              <p className="text-xl text-gray-200 italic">
               "From Data to Decisions — Master AI & ML."
               </p>
-              {/* for personality name */}
+            
               <h3 className="text-2xl font-semibold">AI & ML</h3>
             </div>
             <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">

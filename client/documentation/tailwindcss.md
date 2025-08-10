@@ -1,3 +1,15 @@
+<!-- syntax -->
+
+bg-[#12345GH] for hex code bg
+h-[100vh]
+h-[100%]
+h-50
+w-full
+w-1/2
+w-50
+w-fit
+
+
 <!-- className="w-fit absolute right-2 z-50" -->
  Class	Meaning
 w-fit	Width = fit-content. The element takes only as much horizontal space as its content needs (no extra width).
@@ -13,4 +25,6 @@ It only takes as much width as needed (w-fit),
 It floats on top of other elements (z-50),
 
 It’s placed 8px from the right edge of its parent.
+
+
 

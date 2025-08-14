@@ -13,8 +13,8 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin: [process.env.FRONTEND_URI],
-  credentials: true
+  origin: "http://localhost:5173", // allow frontend origin
+  credentials: true              
 }));
 
 app.use(morgan('dev'))

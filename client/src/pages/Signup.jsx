@@ -16,6 +16,7 @@ const Signup = () => {
     fullName: "",
     password: "",
     avatar: "",
+    role: "",
   });
 
   const [previewImage, setPreviewImage] = useState("");
@@ -73,12 +74,13 @@ const Signup = () => {
     //   return;
     // }
 
-    // creating formData to serialise the image file
+    // creating formData obj to serialise the image file
     const formData = new FormData();
     formData.append("fullName", signupDetails.fullName);
     formData.append("email", signupDetails.email);
     formData.append("password", signupDetails.password);
     formData.append("avatar", signupDetails.avatar);
+    formData.append("role", signupDetails.role);
 
     const response = await dispatch(createAccount(formData));
     console.log(response);
@@ -99,17 +101,17 @@ const Signup = () => {
   return (
     <div>
       <HomeLayout>
-        <div className="flex overflow-x-auto items-center justify-center h-[100vh]">
+        <div className="flex overflow-x-auto items-center justify-center h-[100vh] ">
           <form
             onSubmit={onFormSubmit}
             noValidate
             className="flex flex-col justify-center gap-3 rounded-lg p-4 text-white w-35"
           >
-            <h1 className="text-2xl text-center font-bold">
+            <h1 className="text-2xl text-center font-bold w-52">
               Registration Page
             </h1>
             {/* to upload avatar/image while signup */}
-            <label htmlFor="image_uploads" className="cursor-pointer">
+            <label htmlFor="image_uploads" className="cursor-pointer w-52">
               {previewImage ? (
                 <img
                   className="w-24 h-24 rounded-full m-auto"
@@ -129,7 +131,7 @@ const Signup = () => {
               accept=".jpg, .jpeg, .png, .gif, .bmp, .tiff, .webp, .svg, image/jpeg, image/png, image/gif, image/bmp, image/tiff, image/webp, image/svg+xml"
             />
 
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 w-52">
               <label htmlFor="fullName" className="font-semibold">
                 Name
               </label>
@@ -145,7 +147,24 @@ const Signup = () => {
               />
             </div>
 
+            {/* Role Dropdown */}
             <div className="flex flex-col gap-1">
+              <label htmlFor="role" className="font-semibold">
+                Role
+              </label>
+              <select
+                name="role"
+                id="role"
+                className="select select-bordered w-52 bg-transparent"
+                defaultValue="USER" // default selected
+                onChange={handleUserInput}
+              >
+                <option value="USER">USER</option>
+                <option value="ADMIN">ADMIN</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-1 w-52">
               <label htmlFor="email" className="font-semibold">
                 Email
               </label>
@@ -161,7 +180,7 @@ const Signup = () => {
               />
             </div>
 
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 w-52">
               <label htmlFor="password" className="font-semibold">
                 Password
               </label>
@@ -177,11 +196,11 @@ const Signup = () => {
               />
             </div>
 
-            <button className="mt-2 bg-yellow-800 hover:bg-yellow-500 transition-all ease-in-out duration-300 cursor-pointer py-2 font-semibold text-lg">
+            <button className="mt-2 bg-yellow-800 hover:bg-yellow-500 transition-all ease-in-out duration-300 cursor-pointer py-2 font-semibold text-lg w-52">
               Create Account
             </button>
 
-            <p className="text-center">
+            <p className="text-center w-52">
               Already have an account ?{" "}
               <Link to="/login" className="cursor-pointer text-blue-500">
                 Login

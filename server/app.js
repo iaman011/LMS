@@ -5,6 +5,7 @@ import userRoutes from './routes/user.route.js';
 import courseRoutes from './routes/course.routes.js';
 import paymentRoutes from './routes/payment.route.js'
 import errorMiddleware from './middlewares/error.middleware.js';
+import miscellaneousRoutes from './routes/miscellaneous.routes.js';
 import morgan from 'morgan';
 
 const app = express();
@@ -30,6 +31,7 @@ app.use('/ping', (req, res) => {
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/courses', courseRoutes);
 app.use('/api/v1/payments', paymentRoutes);
+app.use('/api/v1/misc', miscellaneousRoutes);
 
 // 404 route config (optional)
 // app.all('*', (req, res) => {

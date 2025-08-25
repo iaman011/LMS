@@ -202,7 +202,7 @@ const Signup = () => {
 
             <p className="text-center w-52">
               Already have an account ?{" "}
-              <Link to="/login" className="cursor-pointer text-blue-500">
+              <Link to="/signin" className="cursor-pointer text-blue-500">
                 Login
               </Link>
             </p>

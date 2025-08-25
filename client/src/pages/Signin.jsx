@@ -103,7 +103,7 @@ const Signin = () => {
             <p className="text-center">
               Do not have an account ?{" "}
               <Link to="/signup" className="cursor-pointer text-blue-500">
-                Login
+                Signup
               </Link>
             </p>
           </form>

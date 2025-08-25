@@ -1,13 +1,12 @@
 import { FiMenu } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
-
 import { AiFillCloseCircle } from "react-icons/ai";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Footer from "../components/footer";
-import { useSelector } from "react-redux";
-// import {dispatch, useSelector} from 'react-redux'
+import { logout } from "../redux/slices/authSlice";
 
 const HomeLayout = ({ children }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // from auth slice
@@ -28,11 +27,19 @@ const HomeLayout = ({ children }) => {
     drawerSide[0].style.width = "0";
   }
 
-  function onLogout(e) {
-    e.preventDefault();
+// function to handle logout
+  const onLogout = async (event) => {
+    event.preventDefault();
 
-    navigate("/"); //once you logout navigate to home page
-  }
+    // calling logout action
+    const res = await dispatch(logout());
+
+    // redirect to home page if true
+    if (res?.payload?.success) 
+      navigate("/");
+  };
+
+
 
   return (
     <div className="min-h-[90vh]">
@@ -80,7 +87,7 @@ const HomeLayout = ({ children }) => {
                 <li className="absolute bottom-4 w-[90%]">
                   <div className="w-full flex items-center justify-center gap-2">
                     <Link
-                      to="/login"
+                      to="/signin"
                       className="btn btn-primary px-3 py-1 font-semibold rounded-md w-fit text-center"
                     >
                       Login

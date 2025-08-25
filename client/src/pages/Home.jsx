@@ -2,49 +2,133 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between min-h-[100vh] px-6 sm:px-16 gap-10 bg-neutral-50">
-      {/* Left Section: Text Content */}
-      <div className="w-full md:w-1/2 text-center md:text-left space-y-6 mt-10 mb-5">
-        <h1 className="text-6xl sm:text-7xl font-extrabold text-neutral-700 drop-shadow-md mb-10">
-          codeXdev
-        </h1>
-
-      <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
-  Welcome to <span className="font-bold text-indigo-600">codeXdev</span> — your ultimate gateway to a world of knowledge!<br />
-  Explore our extensive library of expertly curated courses, taught by seasoned professionals and industry leaders — all at incredibly affordable prices.<br />
-  <span className="font-semibold text-orange-200">Start your learning journey with us today and unlock your true potential!</span>
-</p>
-
-
-        <h2 className="text-3xl sm:text-4xl font-semibold text-gray-800">
-          Discover top-notch{" "}
-          <span className="text-yellow-500 font-bold">Online Courses</span>{" "}
-          tailored just for you!
-        </h2>
-
-        {/* Buttons */}
-        <div className="flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0">
-          <Link to="/courses">
-            <button className="bg-yellow-500 px-5 py-3 rounded-md font-semibold text-lg hover:bg-yellow-600 transition-all">
+    <div className="flex flex-col bg-black text-gray-200">
+      {/* Hero Section */}
+      <div className="flex flex-col md:flex-row items-center justify-between min-h-[100vh] px-6 sm:px-16 gap-10">
+        {/* Left Section: Hero Text */}
+        <div className="w-full md:w-1/2 text-center md:text-left space-y-6 mt-10 mb-5">
+          <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
+            <span className="text-orange-500">codeXdev</span> 🚀 Upskill with World-Class Courses, Designed for Real-World Impact
+          </h1>
+          <p className="text-lg text-gray-400">
+            Master the most in-demand skills — from MERN Stack to DevOps, AI/ML,
+            Data Analytics, and Data Science. Learn from industry experts, work on
+            real projects, and accelerate your career growth.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center md:justify-start">
+            <Link
+              to="/courses"
+              className="bg-orange-600 text-white px-6 py-3 rounded-2xl shadow hover:bg-orange-700 transition"
+            >
               Explore Courses
-            </button>
-          </Link>
-          <Link to="/contact">
-            <button className="border border-yellow-500 px-5 py-3 rounded-md font-semibold text-lg hover:border-yellow-600 transition-all">
-              Contact Us
-            </button>
-          </Link>
+            </Link>
+            <Link
+              to="/contact"
+              className="border border-orange-600 text-orange-600 px-6 py-3 rounded-2xl hover:bg-orange-900 hover:text-white transition"
+            >
+              Talk to Us
+            </Link>
+          </div>
+        </div>
+
+        {/* Right Section: Hero Illustration Placeholder */}
+        <div className="w-full md:w-1/2 flex justify-center items-center">
+          <div className="bg-gray-900 rounded-2xl shadow-lg p-10 w-[90%] h-[300px] flex items-center justify-center">
+            <h2 className="text-2xl font-semibold text-gray-200">
+              codeXdev Learning Platform
+            </h2>
+          </div>
         </div>
       </div>
 
-      {/* Right Section: Image */}
-      <div className="w-full md:w-1/2 flex justify-center">
-        <img
-          src="../../public/homePageMainImage.png"
-          alt="home page image"
-          className="w-3/4 md:w-full max-w-md"
-        />
-      </div>
+      {/* Courses Section */}
+      <section className="px-6 sm:px-16 py-16 bg-gray-900">
+        <h2 className="text-3xl font-bold text-center mb-10 text-white">
+          📚 Future-Ready Courses, Tailored for You
+        </h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            {
+              title: "MERN Stack Mastery",
+              desc: "Build full-stack, scalable applications with MongoDB, Express, React, and Node.js. Learn deployment, authentication, and best practices to become a complete MERN developer.",
+            },
+            {
+              title: "DevOps Essentials",
+              desc: "Automate workflows and master modern DevOps tools. Learn CI/CD pipelines, Docker, Kubernetes, AWS, and monitoring to streamline software delivery.",
+            },
+            {
+              title: "AI & Machine Learning",
+              desc: "Dive into AI models, supervised/unsupervised learning, deep learning with TensorFlow, and practical ML projects to prepare for the AI-driven future.",
+            },
+            {
+              title: "Data Analytics",
+              desc: "Transform raw data into powerful insights. Learn SQL, Excel, Tableau, and visualization techniques used by top companies to make data-driven decisions.",
+            },
+            {
+              title: "Data Science Pro",
+              desc: "Master Python, statistics, machine learning, and predictive modeling. Work on real datasets and become a data scientist who solves real-world challenges.",
+            },
+          ].map((course, index) => (
+            <div
+              key={index}
+              className="bg-gray-800 rounded-2xl p-6 shadow hover:shadow-lg transition"
+            >
+              <h3 className="text-xl font-semibold mb-3 text-white">{course.title}</h3>
+              <p className="text-gray-300 text-sm">{course.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section className="px-6 sm:px-16 py-16 bg-gray-900">
+        <h2 className="text-3xl font-bold text-center mb-10 text-white">
+          💳 Simple, Transparent Pricing — Start Free, Upgrade Anytime
+        </h2>
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="bg-gray-800 p-8 rounded-2xl shadow">
+            <h3 className="text-2xl font-semibold mb-4 text-white">Free Plan</h3>
+            <ul className="list-disc pl-6 space-y-2 text-gray-300">
+              <li>Access to free learning modules</li>
+              <li>Weekly updates and tutorials</li>
+              <li>Community support forum</li>
+            </ul>
+            <button className="mt-6 w-full bg-orange-600 text-white py-3 rounded-2xl hover:bg-orange-700 transition">
+              Get Started Free
+            </button>
+          </div>
+
+          <div className="bg-gray-800 p-8 rounded-2xl shadow border-2 border-orange-600">
+            <h3 className="text-2xl font-semibold mb-4 text-white">Pro Plan</h3>
+            <ul className="list-disc pl-6 space-y-2 text-gray-300">
+              <li>Access to all premium courses</li>
+              <li>Hands-on projects with mentors</li>
+              <li>Personalized 1:1 doubt support</li>
+              <li>Early access to new course releases</li>
+            </ul>
+            <button className="mt-6 w-full bg-orange-600 text-white py-3 rounded-2xl hover:bg-orange-700 transition">
+              Upgrade Now
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="px-6 sm:px-16 py-20 bg-gray-900 text-white text-center">
+        <h2 className="text-4xl font-bold mb-6">
+          🌟 Ready to Transform Your Career?
+        </h2>
+        <p className="text-lg max-w-2xl mx-auto mb-8 text-gray-300">
+          Join thousands of learners who trusted{" "}
+          <span className="font-semibold text-orange-500">codeXdev</span> to achieve their career goals. Start learning today and build the skills that top companies are hiring for.
+        </p>
+        <Link
+          to="/courses"
+          className="bg-orange-600 text-white font-semibold px-8 py-4 rounded-2xl shadow hover:bg-orange-700 transition"
+        >
+          Start Learning Today
+        </Link>
+      </section>
     </div>
   );
 };

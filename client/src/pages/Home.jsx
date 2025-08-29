@@ -23,7 +23,7 @@ const Home = () => {
               Explore Courses
             </Link>
             <Link
-              to="/contact"
+              to="/contacts"
               className="border border-orange-600 text-orange-600 px-6 py-3 rounded-2xl hover:bg-orange-900 hover:text-white transition"
             >
               Talk to Us

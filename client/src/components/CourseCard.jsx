@@ -6,6 +6,7 @@ const CourseCard = ({ data }) => {
   return (
     <div
       onClick={() => navigate("/course/description", { state: { ...data } })}
+    //   while click on courseCard we send an extra data object that is going to be accessible inside the component so, how do you access this , so see there is a state key which internally have another object which has the unpacked data object coming in the course card 
       className="text-white w-[22rem] h-[430px] shadow-lg rounded-lg cursor-pointer group overflow-hidden bg-zinc-700"
     >
       <div className="overflow-hidden">

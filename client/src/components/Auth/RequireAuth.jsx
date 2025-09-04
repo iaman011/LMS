@@ -13,6 +13,7 @@ const RequireAuth = ({allowedRoles}) => {
   return isLoggedIn && allowedRoles.find((myrole) => myrole == role) ? (
     // if user is loggedIn as ADMIN
     <Outlet />
+    // if role match that is ADMIN, Outlet renders the child component
     // Outlet Component done; is this requireAuth component will be taking some child route component now if the requireAuth parameter is good if these conditions are good and we render the outlet means that corresponding route will be properly shown   
   ) : isLoggedIn ? 
   // if user is loggedIn as USER

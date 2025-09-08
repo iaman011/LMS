@@ -12,6 +12,7 @@ import CourseList from "./pages/Course/CourseList";
 import CourseDescription from "./pages/Course/CourseDescription";
 import CreateCourse from "./pages/Course/CreateCourse";
 import RequireAuth from "./components/Auth/RequireAuth";
+import Profile from "./pages/User/profile";
 
 function App() {
   return (
@@ -32,12 +33,17 @@ function App() {
         <Route path="/courses" element={<CourseList />} />
         <Route path="/course/description" element={<CourseDescription />} />
 
-          {/* parent route component */}
-        <Route element={<RequireAuth allowedRoles={["ADMIN"]}/>}> 
+        {/* parent route component */}
+        <Route element={<RequireAuth allowedRoles={["ADMIN","USER"]} />}>
           {/* child route component */}
-            <Route path="/course/create" element={<CreateCourse />}/>
-          </Route>  
+          <Route path="/user/profile" element={<Profile />} />
+        </Route>
 
+        {/* parent route component */}
+        <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
+          {/* child route component */}
+          <Route path="/course/create" element={<CreateCourse />} />
+        </Route>
 
         <Route path="/contacts" element={<Contact />} />
         <Route path="/denied" element={<Denied />} />

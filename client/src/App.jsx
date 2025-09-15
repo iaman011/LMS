@@ -13,6 +13,7 @@ import CourseDescription from "./pages/Course/CourseDescription";
 import CreateCourse from "./pages/Course/CreateCourse";
 import RequireAuth from "./components/Auth/RequireAuth";
 import Profile from "./pages/User/profile";
+import EditProfie from "./pages/User/EditProfie";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route element={<RequireAuth allowedRoles={["ADMIN","USER"]} />}>
           {/* child route component */}
           <Route path="/user/profile" element={<Profile />} />
+          <Route path="/user/editprofile" element={<EditProfie />} />
         </Route>
 
         {/* parent route component */}

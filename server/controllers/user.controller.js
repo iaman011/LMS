@@ -124,15 +124,31 @@ const logout = (req,res) => {
     });
 }
 
-const getProfile = (req,res) => {
-    const user = User.findById(req.user.id);
+const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
 
     res.status(200).json({
-        success: true,
-        message: 'user details',
-        user
+      success: true,
+      message: 'User details fetched successfully',
+      user
     });
-}
+  } catch (err) {
+    console.error('Error in getProfile:', err);
+    res.status(500).json({
+      success: false,
+      message: 'Server error while fetching profile'
+    });
+  }
+};
+
 
 const forgotPassword = async (req, res, next) => {
   const { email } = req.body;

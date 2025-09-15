@@ -91,11 +91,12 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 
 
 // function to fetch user data
-export const getUserData = createAsyncThunk("/user/details", async () => {
+export const getUserData = createAsyncThunk("/auth/getData", async () => {
   try {
     const res = await axiosInstance.get("/user/me");
-    return res?.data;
+    return (await res).data;
   } catch (error) {
+    console.log(error);
     toast.error(error.message);
   }
 });
@@ -142,26 +143,28 @@ export const forgetPassword = createAsyncThunk(
   }
 );
 
+// Redux thunk
 // function to update user profile
 export const updateProfile = createAsyncThunk(
-  "/user/update/profile",
-  async (data) => {
+  "/auth/update/profile",
+  async (formData) => {
     try {
-      let res = axiosInstance.put(`/user/update/${data[0]}`, data[1]);
-
+      let res = axiosInstance.put('/user/update', formData); // ✅ no id
       toast.promise(res, {
-        loading: "Updating...",
+        loading: "Wait! Updating...",
         success: (data) => data?.data?.message,
         error: "Failed to update profile",
       });
-
       res = await res;
       return res.data;
     } catch (error) {
+      console.log(error);
       toast.error(error?.response?.data?.message);
     }
   }
 );
+
+
 
 // function to reset the password
 export const resetPassword = createAsyncThunk("/user/reset", async (data) => {
@@ -213,18 +216,34 @@ const authSlice = createSlice({
       })
     
       // for user details
-      .addCase(getUserData.fulfilled, (state, action) => {
-        if (action?.payload?.user) {
-          const { user } = action.payload;
+      // .addCase(getUserData.fulfilled, (state, action) => {
+      //   if (action?.payload?.user) {
+      //     const { user } = action.payload;
 
-          localStorage.setItem("data", JSON.stringify(user));
-          localStorage.setItem("isLoggedIn", "true");
-          localStorage.setItem("role", user?.role || "");
+      //     localStorage.setItem("data", JSON.stringify(user));
+      //     localStorage.setItem("isLoggedIn", "true");
+      //     localStorage.setItem("role", user?.role || "");
 
-          state.isLoggedIn = true;
-          state.data = user;
-          state.role = user?.role || "";
-        }
+      //     state.isLoggedIn = true;
+      //     state.data = user;
+      //     state.role = user?.role || "";
+      //   }
+      // });
+.addCase(getUserData.fulfilled, (state, action) => {
+  if (!action?.payload?.user) return;
+
+  localStorage.setItem("data", JSON.stringify(action?.payload?.user));
+  localStorage.setItem("isLoggedIn", "true");
+  localStorage.setItem("role", action?.payload?.user?.role);
+
+  state.isLoggedIn = true;
+  state.data = action?.payload?.user;
+  state.role = action?.payload?.user?.role;
+
+
+
+
+        
       });
   },
 });

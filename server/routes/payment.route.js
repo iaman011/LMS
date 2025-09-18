@@ -13,7 +13,7 @@ router
 
 router
     .route('/subscribe')
-    .get(
+    .post(
         isLoggedIn,
         buySubscription
     );

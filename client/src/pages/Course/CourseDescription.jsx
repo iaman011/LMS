@@ -1,42 +1,68 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import HomeLayout from "../../layouts/HomeLayout";
 
 const CourseDescription = () => {
-  // onClick={() => navigate("/course/description", { state: { ...data } })}
-  // to access this , we have a hook called useLocation() and useLocation() is going to return you the whole object inside that object  there is a state parameter , it is state key that is associated to another object which is the unpacked version of the data coming inside
-
   const { state } = useLocation();
   const navigate = useNavigate();
-
   const { role, data } = useSelector((state) => state.auth);
 
-  console.log("ROLE ->", role, "STATUS ->", data?.subscription?.status);
+  // normalize subscription status and handle undefined
+  const subscriptionStatus = data?.subscription?.status
+    ? data.subscription.status.toLowerCase().trim()
+    : null;
+
+  const isSubscribed = role === "ADMIN" || subscriptionStatus === "active";
+
+  console.log(
+    "ROLE ->",
+    role,
+    "STATUS ->",
+    subscriptionStatus,
+    "isSubscribed ->",
+    isSubscribed
+  );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <HomeLayout>
       <div className="min-h-[90vh] pt-12 px-20 flex flex-col items-center justify-center text-white">
         <div className="grid grid-cols-2 gap-10 py-10 relative">
+          {/* Left side: Thumbnail + info */}
           <div className="space-y-5">
             <img
-              className="w-full h-64"
+              className="w-full h-64 object-cover rounded-md"
               alt="thumbnail"
               src={state?.thumbnail?.secure_url}
             />
-            <div className="space-y-4">
-              <div className="flex flex-col items-center justify-between text-xl">
-                <p className="font-semibold">
-                  <span className="text-yellow-600">Total Lectures: </span>{" "}
-                  {state?.numberOfLectures}
-                </p>
-                <p className="font-semibold">
-                  <span className="text-yellow-600">Instructor: </span>{" "}
-                  {state?.createdBy}
-                </p>
-              </div>
 
-              {role == "ADMIN" || data?.subscription?.status === "active" ? (
+            <div className="space-y-4 text-center">
+              <p className="text-xl font-semibold">
+                <span className="text-yellow-600">Total Lectures: </span>
+                {state?.numberOfLectures || "N/A"}
+              </p>
+              <p className="text-xl font-semibold">
+                <span className="text-yellow-600">Instructor: </span>
+                {state?.createdBy || "N/A"}
+              </p>
+
+              <p className="text-xl">
+                Subscription:{" "}
+                <span
+                  className={`font-bold ${
+                    isSubscribed ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {subscriptionStatus || "Not Subscribed"}
+                </span>
+              </p>
+
+              {/* Button: Watch Lectures / Subscribe */}
+              {isSubscribed ? (
                 <button
                   onClick={() =>
                     navigate("/course/displaylectures", { state: { ...state } })
@@ -56,19 +82,13 @@ const CourseDescription = () => {
             </div>
           </div>
 
-          {/* Right of the grid */}
-          <div className="space-y-2 text-xl">
+          {/* Right side: Title + Description */}
+          <div className="space-y-4 text-xl">
             <h1 className="text-3xl font-bold text-yellow-500 mb-5 text-center">
-                {state?.title}
+              {state?.title || "Course Title"}
             </h1>
-            <p className="text-yellow-500">
-                Course Description: {" "}
-
-            </p>
-            <p>
-                {state?.description}
-            </p>
-
+            <p className="text-yellow-500 font-semibold">Course Description:</p>
+            <p>{state?.description || "No description available."}</p>
           </div>
         </div>
       </div>

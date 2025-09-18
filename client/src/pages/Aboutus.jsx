@@ -48,7 +48,7 @@ const Aboutus = () => {
                 
               <img
                 className="w-70 rounded-full shadow-2xl"
-                src="../../public/mern.avif"
+                src="/mern.avif"
                 alt="mern"
               />
             
@@ -73,7 +73,7 @@ const Aboutus = () => {
             
               <img
                className="w-70 rounded-full shadow-2xl"
-                src="../../public/devops.png"
+                src="/devops.png"
                 alt="DevOps"
               />
               
@@ -98,7 +98,7 @@ const Aboutus = () => {
             
               <img
                 className="w-70 rounded-full shadow-2xl"
-                src="../../public/C++_Logo.svg"
+                src="/C++_Logo.svg"
                 alt="einstein"
               />
             
@@ -123,7 +123,7 @@ const Aboutus = () => {
           
               <img
                className="w-70 rounded-full shadow-2xl"
-                src="../../public/datascience.jpg"
+                src="/datascience.jpg"
                 alt="Steve Jobs"
               />
              
@@ -148,7 +148,7 @@ const Aboutus = () => {
              
               <img
                 className="w-70 rounded-full shadow-2xl"
-                src="../../public/aiml.png"
+                src="/aiml.png"
                 alt="Bill Gates"
               />
            

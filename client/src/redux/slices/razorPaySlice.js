@@ -8,6 +8,10 @@ const initialState = {
   key: "",
   subscription_id: "",
   isPaymentVerified: false,
+   subscription: {
+    status: null,
+    id: null,
+  },
   allPayments: {},
   finalMonths: {},
   monthlySalesRecord: [],
@@ -15,12 +19,12 @@ const initialState = {
 
 // function to get the api key
 export const getRazorPayId = createAsyncThunk("/razorPayId/get", async () => {
-  try {
+//   try {
     const res = await axiosInstance.get("/payments/razorpay-key");
     return res.data;
-  } catch (error) {
-    toast.error("Failed to load data");
-  }
+//   } catch (error) {
+    // toast.error("Failed to load data");
+//   }
 });
 
 // function to purchase the course bundle
@@ -41,22 +45,22 @@ export const purchaseCourseBundle = createAsyncThunk(
 export const verifyUserPayment = createAsyncThunk(
   "/payments/verify",
   async (data) => {
-    try {
+    // try {
       const res = await axiosInstance.post("/payments/verify", {
         razorpay_payment_id: data.razorpay_payment_id,
         razorpay_subscription_id: data.razorpay_subscription_id,
         razorpay_signature: data.razorpay_signature,
       });
       return res.data;
-    } catch (error) {
-      toast.error("error?.response?.data?.message");
-    }
+    // } catch (error) {
+    //   toast.error("error?.response?.data?.message");
+    // }
   }
 );
 
 // function to get all the payment record
 export const getPaymentRecord = createAsyncThunk("/payment/record", async () => {
-  try {
+//   try {
     const res = axiosInstance.get("/payments?count=100"); //queryparam
     toast.promise(res, {
       loading: "Getting the payments record...",
@@ -68,9 +72,9 @@ export const getPaymentRecord = createAsyncThunk("/payment/record", async () => 
 
     const response = await res;
     return response.data;
-  } catch (error) {
-    toast.error("Operation failed");
-  }
+//   } catch (error) {
+    // toast.error("Operation failed");
+//   }
 });
 
 // function to cancel the course bundle subscription
@@ -110,8 +114,10 @@ const razorpaySlice = createSlice({
       .addCase(verifyUserPayment.fulfilled, (state, action) => {
         toast.success(action?.payload?.message);
         state.isPaymentVerified = action?.payload?.success;
+        state.subscription = action.payload.subscription;
+  
       })
-      .addCase(verifyUserPayment.failed, (state, action) => {
+      .addCase(verifyUserPayment.rejected, (state, action) => {
         toast.error(action?.payload?.message);
         state.isPaymentVerified = action?.payload?.success;
       })

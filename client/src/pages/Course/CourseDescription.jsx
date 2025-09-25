@@ -6,23 +6,18 @@ import HomeLayout from "../../layouts/HomeLayout";
 const CourseDescription = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { role, data } = useSelector((state) => state.auth);
 
-  // normalize subscription status and handle undefined
-  const subscriptionStatus = data?.subscription?.status
-    ? data.subscription.status.toLowerCase().trim()
-    : null;
+  // User role from auth slice
+  const { role } = useSelector((state) => state.auth);
+
+  // Subscription info from razorpay slice
+  const subscriptionStatus = useSelector(
+    (state) => state.razorpay.subscription.status
+  );
 
   const isSubscribed = role === "ADMIN" || subscriptionStatus === "active";
 
-  console.log(
-    "ROLE ->",
-    role,
-    "STATUS ->",
-    subscriptionStatus,
-    "isSubscribed ->",
-    isSubscribed
-  );
+  console.log("ROLE ->", role, "STATUS ->", subscriptionStatus, "isSubscribed ->", isSubscribed);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,14 +27,13 @@ const CourseDescription = () => {
     <HomeLayout>
       <div className="min-h-[90vh] pt-12 px-20 flex flex-col items-center justify-center text-white">
         <div className="grid grid-cols-2 gap-10 py-10 relative">
-          {/* Left side: Thumbnail + info */}
+          {/* Left side */}
           <div className="space-y-5">
             <img
               className="w-full h-64 object-cover rounded-md"
               alt="thumbnail"
               src={state?.thumbnail?.secure_url}
             />
-
             <div className="space-y-4 text-center">
               <p className="text-xl font-semibold">
                 <span className="text-yellow-600">Total Lectures: </span>
@@ -49,7 +43,6 @@ const CourseDescription = () => {
                 <span className="text-yellow-600">Instructor: </span>
                 {state?.createdBy || "N/A"}
               </p>
-
               <p className="text-xl">
                 Subscription:{" "}
                 <span
@@ -61,7 +54,6 @@ const CourseDescription = () => {
                 </span>
               </p>
 
-              {/* Button: Watch Lectures / Subscribe */}
               {isSubscribed ? (
                 <button
                   onClick={() =>
@@ -82,7 +74,7 @@ const CourseDescription = () => {
             </div>
           </div>
 
-          {/* Right side: Title + Description */}
+          {/* Right side */}
           <div className="space-y-4 text-xl">
             <h1 className="text-3xl font-bold text-yellow-500 mb-5 text-center">
               {state?.title || "Course Title"}

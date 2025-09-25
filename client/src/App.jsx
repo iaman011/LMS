@@ -16,6 +16,7 @@ import Profile from "./pages/User/profile";
 import EditProfie from "./pages/User/EditProfie";
 import Checkout from "./pages/Payment/Checkout";
 import CheckoutSuccess from "./pages/Payment/CheckoutSuccess";
+import CheckoutFailure from "./pages/Payment/CheckoutFailure";
 
 function App() {
   return (
@@ -38,12 +39,13 @@ function App() {
 
         {/* parent route component */}
         {/* for user must have loggedIn */}
-        <Route element={<RequireAuth allowedRoles={["ADMIN","USER"]} />}>
+        <Route element={<RequireAuth allowedRoles={["ADMIN", "USER"]} />}>
           {/* child route component */}
           <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/editprofile" element={<EditProfie />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/checkout/success" element={<CheckoutSuccess />} />
+          <Route path="/checkout/failure" element={<CheckoutFailure />} />
         </Route>
 
         {/* parent route component */}

@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-hot-toast";
-import axiosInstance from "../../config/axiosinstance";
-
+import axiosInstance from "../../config/axiosinstance.js";
 
 const initialState = {
   lectures: [],
@@ -10,9 +9,9 @@ const initialState = {
 // function to get all the lectures
 export const getCourseLecture = createAsyncThunk(
   "/course/lecture/get",
-  async (courseId) => {
+  async (cid) => {
     try {
-      const res = axiosInstance.get(`/courses/${courseId}`);
+      const res = axiosInstance.get(`/courses/${cid}`);
 
       toast.promise(res, {
         loading: "Fetching the lectures...",

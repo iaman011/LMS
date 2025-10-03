@@ -165,6 +165,7 @@ export const addLectureToCourseById = async (req, res, next) => {
     if (req.file){ //file upload for thumbnail
         const result = await cloudinary.v2.uploader.upload(req.file.path, {
             folder: 'LMS',
+            resource_type: "auto" //to add both image and video
         });
 
         if (result) {

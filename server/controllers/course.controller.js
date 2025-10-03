@@ -118,31 +118,54 @@ console.log("courseId:", courseId);
 export const deleteCourse = async (req, res, next) => {
   try {
     const { courseId } = req.params;
+    const { lectureId } = req.query;
 
     const course = await Course.findById(courseId);
     if (!course) {
-      return next(new AppError('Course does not exist on given Id!', 500));
+      return next(new AppError("Course does not exist on given Id!", 404));
     }
 
-    // If course exists, delete it
+    //  If lectureId provided → delete lecture only
+    if (lectureId) {
+      const lectureIndex = course.lectures.findIndex(
+        (lec) => lec._id.toString() === lectureId
+      );
+
+      if (lectureIndex === -1) {
+        return next(new AppError("Lecture not found!", 404));
+      }
+
+      course.lectures.splice(lectureIndex, 1);
+      course.numberOfLectures = course.lectures.length;
+
+      await course.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Lecture deleted successfully",
+        course,
+      });
+    }
+
+    //  If no lectureId → delete whole course
     await course.deleteOne();
 
     res.status(200).json({
       success: true,
-      message: 'Course deleted successfully',
-      course
+      message: "Course deleted successfully",
     });
-
   } catch (e) {
     return next(new AppError(e.message, 500));
   }
 };
+
 
 export const addLectureToCourseById = async (req, res, next) => {
   try {
     // required Inputs
     const { title, description } = req.body;
     const { courseId } = req.params;
+    console.log(title, description)
 
     // Input validation
     if (!title || !description) {
@@ -162,10 +185,13 @@ export const addLectureToCourseById = async (req, res, next) => {
         lecture: {} 
     }
 
+    const isVideo = req.file.mimetype.startsWith("video");
+console.log(req.file.mimetype)
     if (req.file){ //file upload for thumbnail
         const result = await cloudinary.v2.uploader.upload(req.file.path, {
             folder: 'LMS',
-            resource_type: "auto" //to add both image and video
+            // resource_type: "auto" //to add both image and video
+             resource_type: isVideo ? "video" : "image",
         });
 
         if (result) {

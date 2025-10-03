@@ -58,10 +58,9 @@ export const addCourseLecture = createAsyncThunk(
 export const deleteCourseLecture = createAsyncThunk(
   "/course/lecture/delete",
   async (data) => {
-    console.log(data);
     try {
       const res = axiosInstance.delete(
-        `/courses/?courseId=${data.courseId}&lectureId=${data.lectureId}`
+        `/courses/${data.courseId}?lectureId=${data.lectureId}`
       );
 
       toast.promise(res, {
@@ -73,10 +72,12 @@ export const deleteCourseLecture = createAsyncThunk(
       const response = await res;
       return response.data;
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || "Something went wrong");
+      throw error;
     }
   }
 );
+
 
 const lectureSlice = createSlice({
   name: "lecture",

@@ -32,6 +32,7 @@ const authorizedSubscriber= async (req,res,next) => {
   if (currentRole !== 'ADMIN' && subscriptionStatus !== 'active'){
        return next(new AppError('Please Subscribe to access this route', 403));
   }
+  next();
 };
 
 export default isLoggedIn;
